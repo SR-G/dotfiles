@@ -1,0 +1,18 @@
+" Restore default archlinux configuration (disabled when .vimrc is found)
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+
+" Proper handle of 'paste' (disable formatting)
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+" VIM to run 'chezmoi apply' whenever a dotfile is saved
+# autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path %
