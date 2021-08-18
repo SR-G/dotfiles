@@ -1,0 +1,14 @@
+export MARKPATH="$HOME/.marks"
+
+mark () {
+        mkdir -p "$MARKPATH" 2>/dev/null
+        ln -s "$(pwd)" "$MARKPATH/$1"
+}
+
+goto () {
+        cd -P "$MARKPATH/$1" 2> /dev/null || echo "No such mark: $1"
+}
+
+marks () {
+        ls --time-style="+%Y-%m-%d %H:%M" --show-control-chars --human-readable --tabsize=0 --literal --color=auto -l "$MARKPATH" | sed 's/  / /g' | awk '{ printf "%-30s%-3s%-20s\n",$8,$9,$10 }' && echo
+}
