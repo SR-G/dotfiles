@@ -95,13 +95,13 @@ function goto {
 }
 
 function mark {
-  register_mark "$(pwd)" "$1"
+  register_mark "$(realpath .)" "$1"
 }
 
 function register_mark {
   typeset WHERE="$1"
   typeset LABEL="$2"
-  [[ ! -n "${MARKPATH}/${LABEL}" && -d "${WHERE}" ]] && mkdir -p "${MARKPATH}" 2>/dev/null && ln -s "${WHERE}" "${MARKPATH}/${LABEL}"
+  [[ ! -h "${MARKPATH}/${LABEL}" && -d "${WHERE}" ]] && echo "Registering path [${WHERE}] as [${LABEL}]" && mkdir -p "${MARKPATH}" 2>/dev/null && ln -s "${WHERE}" "${MARKPATH}/${LABEL}"
 }
 
 function unmark {
