@@ -28,3 +28,4 @@ export MANPAGER="most"
 export MANPATH="/usr/local/man:$MANPATH"
 
 export NNTPSERVER="news.free.fr"
+export HOSTNAME=$(hostname)
