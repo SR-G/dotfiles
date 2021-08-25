@@ -14,6 +14,16 @@ git add . && git commit -m"Updates" && git push origin master
 exit
 ```
 
+```bash
+chezmoi doctor
+chezmoi diff
+chezmoi -v apply
+```
+
+```bash
+chezmoi init --apply SR-G
+```
+
 ## Misc
 
 Reminder of manual GIT configuration
