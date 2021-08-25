@@ -4,9 +4,26 @@ Personal set of linux dotfiles / configuration files, handled through [chezmoi](
 
 ## Regular commands
 
+- **Initial installation** : 
+
+```bash
+cd /home/
+sh -c "$(curl -fsLS git.io/chezmoi)"
+```
+
+- **Download dotfiles on a new server** : 
+
+```bash
+chezmoi init --apply SR-G
+```
+
+- **Add files** : 
+
 ```bash
 chezmoi add <filename>
 ```
+
+- **Commit added files** : 
 
 ```bash
 chezmoi cd
@@ -14,14 +31,12 @@ git add . && git commit -m"Updates" && git push origin master
 exit
 ```
 
+- **Check, compare, apply** : 
+
 ```bash
 chezmoi doctor
 chezmoi diff
 chezmoi -v apply
-```
-
-```bash
-chezmoi init --apply SR-G
 ```
 
 ## Misc
