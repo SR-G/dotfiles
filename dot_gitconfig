@@ -1,0 +1,5 @@
+[user]
+	name = SR-G
+	email = serge.simon@gmail.com
+[credential]
+	helper = store

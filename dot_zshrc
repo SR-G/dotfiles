@@ -1,0 +1,382 @@
+# Path to your oh-my-zsh installation.
+export ZSH=/home/users/sergio/.oh-my-zsh
+plugins=(git)
+
+ZSH_THEME="robbyrussell" # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/ Optionally, if you set this to "random", it'll load a random theme each time that oh-my-zsh is loaded.
+DISABLE_UPDATE_PROMPT=true
+HIST_STAMPS="yyyy-mm-dd"
+
+# CASE_SENSITIVE="true"
+# HYPHEN_INSENSITIVE="true"
+# export UPDATE_ZSH_DAYS=13
+# DISABLE_LS_COLORS="true"
+# DISABLE_AUTO_TITLE="true"
+# ENABLE_CORRECTION="true"
+# COMPLETION_WAITING_DOTS="true"
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+source $ZSH/oh-my-zsh.sh  # User configuration
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+
+READNULLCMD=${PAGER:-/usr/bin/pager}
+
+if [[ "$TERM" != emacs ]]; then
+[[ -z "$terminfo[kdch1]" ]] || bindkey -M emacs "$terminfo[kdch1]" delete-char
+[[ -z "$terminfo[khome]" ]] || bindkey -M emacs "$terminfo[khome]" beginning-of-line
+[[ -z "$terminfo[kend]" ]] || bindkey -M emacs "$terminfo[kend]" end-of-line
+[[ -z "$terminfo[kich1]" ]] || bindkey -M emacs "$terminfo[kich1]" overwrite-mode
+[[ -z "$terminfo[kdch1]" ]] || bindkey -M vicmd "$terminfo[kdch1]" vi-delete-char
+[[ -z "$terminfo[khome]" ]] || bindkey -M vicmd "$terminfo[khome]" vi-beginning-of-line
+[[ -z "$terminfo[kend]" ]] || bindkey -M vicmd "$terminfo[kend]" vi-end-of-line
+[[ -z "$terminfo[kich1]" ]] || bindkey -M vicmd "$terminfo[kich1]" overwrite-mode
+
+[[ -z "$terminfo[cuu1]" ]] || bindkey -M viins "$terminfo[cuu1]" vi-up-line-or-history
+[[ -z "$terminfo[cuf1]" ]] || bindkey -M viins "$terminfo[cuf1]" vi-forward-char
+[[ -z "$terminfo[kcuu1]" ]] || bindkey -M viins "$terminfo[kcuu1]" vi-up-line-or-history
+[[ -z "$terminfo[kcud1]" ]] || bindkey -M viins "$terminfo[kcud1]" vi-down-line-or-history
+[[ -z "$terminfo[kcuf1]" ]] || bindkey -M viins "$terminfo[kcuf1]" vi-forward-char
+[[ -z "$terminfo[kcub1]" ]] || bindkey -M viins "$terminfo[kcub1]" vi-backward-char
+
+# ncurses fogyatekos
+[[ "$terminfo[kcuu1]" == "O"* ]] && bindkey -M viins "${terminfo[kcuu1]/O/[}" vi-up-line-or-history
+[[ "$terminfo[kcud1]" == "O"* ]] && bindkey -M viins "${terminfo[kcud1]/O/[}" vi-down-line-or-history
+[[ "$terminfo[kcuf1]" == "O"* ]] && bindkey -M viins "${terminfo[kcuf1]/O/[}" vi-forward-char
+[[ "$terminfo[kcub1]" == "O"* ]] && bindkey -M viins "${terminfo[kcub1]/O/[}" vi-backward-char
+[[ "$terminfo[khome]" == "O"* ]] && bindkey -M viins "${terminfo[khome]/O/[}" beginning-of-line
+[[ "$terminfo[kend]" == "O"* ]] && bindkey -M viins "${terminfo[kend]/O/[}" end-of-line
+[[ "$terminfo[khome]" == "O"* ]] && bindkey -M emacs "${terminfo[khome]/O/[}" beginning-of-line
+[[ "$terminfo[kend]" == "O"* ]] && bindkey -M emacs "${terminfo[kend]/O/[}" end-of-line
+fi
+
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
+                             /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
+# unalias run-help
+# autoload run-help
+
+autoload -U compinit
+compinit
+
+# === Functions
+
+function show {
+  while [[ $# -ne 0 ]] ; do
+    MASQUE=$1
+    shift
+  done
+  clear
+  echo ">> Affichage dernier fichier pour masque'$MASQUE' "
+  ls -1tr "$MASQUE" | tail -1 | xargs more
+}
+
+function dirs {
+  ls -d */
+}
+
+function df { 
+  /usr/bin/df --output=target,source,fstype,size,used,pcent,avail --exclude-type=xfs --exclude-type=tmpfs --exclude-type=overlay -kh $1 | grep -v -e '^none' | ( read header ; echo "$header" ; sort) 
+}
+
+export MARKPATH=$HOME/.marks
+[[ ! -d "$MARKPATH" ]] && mkdir -p "${MARKPATH}" 2>/dev/null
+
+function goto {
+  cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+}
+
+function mark {
+  register_mark "$(pwd)" "$1"
+}
+
+function register_mark {
+  typeset WHERE="$1"
+  typeset LABEL="$2"
+  [[ ! -n "${MARKPATH}/${LABEL}" && -d "${WHERE}" ]] && mkdir -p "${MARKPATH}" 2>/dev/null && ln -s "${WHERE}" "${MARKPATH}/${LABEL}"
+}
+
+function unmark {
+  rm -i "${MARKPATH}/${1}" 2>/dev/null
+}
+
+function marks {
+  /usr/bin/ls -l "${MARKPATH}" | sed 's/  / /g' | awk '{ printf "%-30s%-3s%-20s\n",$9,$10,$11 }' && echo
+}
+
+function _completemarks {
+  reply=($(ls $MARKPATH))
+}
+
+compctl -K _completemarks goto
+compctl -K _completemarks unmark
+
+_comps[chainer]="_precommand"  
+
+setopt no_complete_aliases
+
+register_mark "/var/log/" "logs"
+register_mark "/var/tmp/" "tmp"
+register_mark "/usr/bin/" "bin"
+register_mark "/home/datas/downloads/" "down"
+register_mark "/home/datas/docker-workspace/" "docker"
+register_mark "/home/datas/Seafile/" "seafile"
+
+# swap 2 filenames around
+function swap {
+  local TMPFILE=tmp.$$
+  mv "$1" $TMPFILE
+  mv "$2" "$1"
+  mv $TMPFILE "$2"
+}
+
+function cmd {
+ if [[ -z "${1}" ]] ; then
+   fc -l -${HISTSIZE}
+ else
+   # fc -l -${2:-${HISTSIZE}} | awk -v tofind=${1} '($0!~/ cmd /) && ($0~tofind) { print }'
+   fc -l -${2:-${HISTSIZE}} | grep -v cmd | grep "${1}"
+ fi
+}
+
+function cmdl {
+  cmd "${1}" | grep -v cmdl | tail -10
+}
+
+# Recursive grep
+function grepi {
+  typeset SEARCH="$1"
+  echo "Recherche de la chaine '$SEARCH' dans $(pwd)"
+  find . -name "*" 2>/dev/null | while read F ; do
+    if [[ -f "$F" ]] ; then
+      NB=$(grep -i "$SEARCH" "$F" 2>/dev/null | wc -l)
+      if [[ "$NB" -ne 0 ]] ; then
+        echo ">> $F"
+        grep -i "$SEARCH" "$F" 2>/dev/null
+      fi
+    fi
+  done
+}
+
+# Recursive search inside jars
+function jari {
+  typeset SEARCH="$1";
+  echo "Searching string [$SEARCH] in jars available under [$(pwd)]";
+  find . -name "*.jar" 2>/dev/null | while read F; do
+  NB=$(jar -tvf $F | grep "$SEARCH" 2>/dev/null | wc -l);
+  if [[ "$NB" -ne 0 ]]; then
+    echo ">> $F";
+    jar -tvf "$F" | grep "$SEARCH" 2>/dev/null;
+  fi
+  done
+}
+
+# Kill d'un process
+function killprocesses {
+  echo "Kill processes matching pattern [$1]"
+  [[ -z "$1" ]] && return
+  ps -ef 2>/dev/null | grep -i "$1" | egrep -v "grep|$$" | awk ' { print $2 } ' | while read PID ; do
+    if [[ ! -z "$PID" && "$PID" -ne 1 && "$PID" -ne 0 ]] ; then
+      echo " -> kill PID [$PID] ..."
+      kill -9 $PID
+    fi
+  done
+}
+
+if [ -x /usr/bin/dircolors ] ; then
+  if [ -r ~/.dir_colors ] ;then
+    eval "`dircolors ~/.dir_colors`"
+  elif [ -r /etc/dir_colors ] ; then
+    eval "`dircolors /etc/dir_colors`"
+  else
+    eval "`dircolors`"
+  fi
+fi
+
+function avijoin {
+	local mask=$1
+	local command="avimerge -o \"${mask}\".avi -i "
+	local files=""
+	local cnt=0
+	ls -1A "${mask}"* | while read F
+	do
+		files="${files}\"${F}\" "
+		cnt=$(expr $cnt + 1)
+	done
+	[ "$cnt" -eq 0 ] && return
+	command="${command}${files} "
+	echo $command
+	eval $command
+	rm -f ${files}
+	}
+
+function cheat {
+  curl cht.sh/$1
+}
+
+function numren {
+  [[ ! -z "$1" ]] && cd "$1"
+  I=1
+  ls -1v -- * | while read F ; do
+    EXT=${F##*.}
+    [ "$EXT" = "jpeg" ] && EXT="jpg"
+    N="$I"
+    [[ ${#N} -eq 1 ]] && N="0${N}"
+    [[ ${#N} -eq 2 ]] && N="0${N}"
+    [[ ${#N} -eq 3 ]] && N="0${N}"
+    N="${N}.${EXT}"
+    [[ "$N" != "$F" ]] && echo "$F > $N" && mv -- "$F" "$N"
+    I=$(expr $I + 1)
+  done
+  [[ ! -z "$1" ]] && cd -
+}
+
+function numren_all {
+  ls -1d -- * | while read D ; do
+    NB=$(ls $D|grep -v "^[0-9][0-9][0-9][0-9]\.jpg"|grep jpg|wc -l)
+    [[ "$NB" -gt 0 ]] && echo "$D" && numren "$D"
+  done
+}
+
+function bdorg {
+  BASE="$1"
+  DEST="$2"
+  [[ -z "$DEST" ]] && DEST="$BASE"
+  if [ ! -z "$DEST" ] ; then
+    mkdir "$DEST"
+    mv "$BASE"* "$DEST"
+    chown -R sergio:sergio "$DEST"
+  fi
+}
+
+function tools {
+  for TOOL in fzf rg htop most unzip unrar 7z feh git ; do
+    which $TOOL 
+  done
+}
+
+function rzip {
+  N="$1"
+  zip -r -9 "${N}.zip" "${N}"
+}
+
+function epuborg {
+  ls -1 *epub | while read F
+  do
+    BASE=${F%.*}
+    echo $BASE
+    mkdir "$BASE"
+    mv "$BASE"* "$BASE"
+  done
+}
+
+function bdl {
+  OLD_PWD=$PWD ; cd /home/datas/bdz/ ; fzf -e ; cd $OLD_PWD
+}
+
+# === Aliases
+
+alias vnc-jupiter='vncviewer jupiter:1 -passwd ~/.vnc/passwd -compresslevel 0 -quality 0 -shared'
+# alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --quiet --sout "#duplicate{dst=standard{access=udp,mux=ts,dst=$IP}" -I ncurses --extraintf http --http-src "/mnt/"'
+alias git='LANG=en_GB git'
+alias torrent='scp *.torrent root@tensin:/home/downloaded/torrents/rtorrent/watch/start/ && rm *.torrent'
+alias veille='op pm-suspend'
+# alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout "#duplicate{dst=standard{access=udp,mux=ts,dst=$IP}" -I ncurses'
+alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout="#duplicate{dst=rtp{mux=ts,ttl=10,name=\"VLC Local Network Streaming\",description=\"VLC Local Network Streaming\",port=1234,sdp=rtsp://:8004/vlc.sdp}}" --extraintf ncurses -I http --http-host 0.0.0.0:8003 '
+alias tvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout="#transcode{vcodec=h264,acodec=mpga,vb=800,ab=128,deinterlace}:duplicate{dst=rtp{mux=ts,ttl=10,name=\"VLC Local Network Streaming\",description=\"VLC Local Network Streaming\",port=1234,sdp=rtsp://:8004/vlc.sdp}}" --extraintf ncurses -I http --http-host 0.0.0.0:8003 '
+alias clean='clean.sh'
+# alias start=_start
+alias start='sudo /etc/init.d/'
+alias dus='du -ks * | sort -n'
+alias ls='ls --time-style="+%Y-%m-%d %H:%M" --show-control-chars --human-readable --tabsize=0 --literal --color=auto'
+alias ll='ls -Al'
+alias lr='ls -Altr'
+alias -g '...'='../..'
+alias -g '....'='../../..'
+alias -g '.....'='../../../..'
+alias errors='grep "prep_new_page" /var/log/syslog'
+alias more='less'
+alias hist='history 0'
+alias emule='ledit -h ~/.mldonkey_history -x nc localhost 4000'
+alias chdir='find . -type d -exec chmod 775 "{}" \;'
+alias dl='clear ; N=25; echo "$N derniers downloads ($(date))" ; echo "------------------------------" ; echo "" ; ls -Altr $UNXDOWN/* | sort -k6,7 | egrep -v "_infected|tmp|_trashcan|BDz2Pack" | tail -$N | awk '\'' {
+    printf("--==>> ")
+    for (i=8; i<=NF; i++)
+    printf("%s ", $i)
+    printf("\n")
+    } '\'' | grep -v -- "--==>> $" '
+alias telent='banner TELENT ; banner "ALORS !" ; telnet $1'
+alias lire='banner MORE ; banner "SAPERLIPOPETTE !" ; more $1'
+alias cgrep='grep --color=always'
+alias se='sudo apt-cache search'
+alias ins='sudo apt-get install'
+alias du='du -kh'
+# alias df='df -kTh'
+alias stat="echo ' ' && uname -a && echo ' '&& uptime &&echo ' '&& df && echo ' '"
+alias svi="sudo vi"
+alias h='history'
+alias path='echo -e ${PATH//:/\\n}'
+alias myps='/bin/ps -u "$USER" -o user,pid,ppid,pcpu,pmem,args|less'
+alias mkdir='mkdir -p'
+alias qiv='qiv --scale_down --fullscreen --merged_case_sort'
+alias vi='vim'
+alias upd="sudo pacman -Syu"
+alias th='nohup thunar . >/dev/null 2>&1 &'
+alias calc='nohup /usr/bin/gnome-calculator >/dev/null 2>&1 &'
+alias vol_id='blkid'
+alias halt='sudo shutdown -P -h now'
+alias feh='feh --scale-down'
+alias h="fc -li 1"  # like `history` but with dates
+alias hatop='/home/applications/hatop/current/bin/hatop -s /var/run/haproxy.sock'        
+alias sleep-solaris='curl 192.168.8.3:8009/sleep'
+alias sleep-cap='curl 192.168.8.176:8009/sleep'
+
+# === Environments
+
+export VISUAL=vim
+export EDITOR=vim
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# === Display
+
+if [[ -z "$SSH_CLIENT" ]] ; then
+  export DISPLAY=":0.0"
+else
+  NEW_DISPLAY="$(echo $SSH_CLIENT | awk ' { print $1 } ')"
+  if [[ "$NEW_DISPLAY" != "192.168.1.4" && ! -z "$NEW_DISPLAY" ]] ; then
+    export DISPLAY="$NEW_DISPLAY:0.0"
+  fi
+fi
+
+# === Prompt
+
+if [ "`id -u`" -eq 0 ]; then
+  export PS1="%{[36;1m%}%T%{[0m%} %{[34;1m%}%n%{[0m[33;1m%}@%{[37;1m%}%m %{[32;1m%}%~%{[0m[33;1m%}%#%{[0m%} "
+else
+  export PS1="%{[36;1m%}%T%{[0m%} %{[31;1m%}%n%{[0m[33;1m%}@%{[37;1m%}%m %{[32;1m%}%~%{[0m[33;1m%}%#%{[0m%} "
+fi
+
+# === SSH Agent
+
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+SSHAGENT=/usr/bin/ssh-agent
+SSHAGENTARGS="-s"
+if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
+  eval `$SSHAGENT $SSHAGENTARGS`
+  trap "kill $SSH_AGENT_PID" 0
+fi
