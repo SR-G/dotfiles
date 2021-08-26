@@ -41,6 +41,8 @@ chezmoi -v apply
 
 ## Misc
 
+### Git configuration
+
 Reminder of manual GIT configuration
 
 ```bash
@@ -55,4 +57,13 @@ git config --global credential.helper store
 
 # Git cache in memory (with 1 year timeout (in seconds))
 # git config --global credential.helper 'cache --timeout=31536000'
+```
+
+### yay install
+
+```bash
+pacman -S --needed git base-devel
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
 ```
