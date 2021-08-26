@@ -293,6 +293,16 @@ function bdl {
 
 # === Aliases
 
+export OS=$(grep "^NAME=" /etc/os-release|cut -d"=" -f2)
+case "$OS" in
+  "Debian GNU/Linux")
+    alias upd="sudo apt-get update && sudo apt-get upgrade -y" 
+    ;;
+  "Arch Linux")
+    alias upd="sudo pacman -Syu" 
+    ;;
+esac
+
 alias vnc-jupiter='vncviewer jupiter:1 -passwd ~/.vnc/passwd -compresslevel 0 -quality 0 -shared'
 # alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --quiet --sout "#duplicate{dst=standard{access=udp,mux=ts,dst=$IP}" -I ncurses --extraintf http --http-src "/mnt/"'
 alias git='LANG=en_GB git'
@@ -337,7 +347,6 @@ alias myps='/bin/ps -u "$USER" -o user,pid,ppid,pcpu,pmem,args|less'
 alias mkdir='mkdir -p'
 alias qiv='qiv --scale_down --fullscreen --merged_case_sort'
 alias vi='vim'
-alias upd="sudo pacman -Syu"
 alias th='nohup thunar . >/dev/null 2>&1 &'
 alias calc='nohup /usr/bin/gnome-calculator >/dev/null 2>&1 &'
 alias vol_id='blkid'
