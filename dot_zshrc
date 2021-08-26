@@ -293,7 +293,7 @@ function bdl {
 
 # === Aliases
 
-export OS=$(grep "^NAME=" /etc/os-release|cut -d"=" -f2|tr "\"" "")
+export OS=$(grep "^NAME=" /etc/os-release|cut -d"=" -f2|sed 's/"//g')
 case "$OS" in
   "Debian GNU/Linux")
     alias upd="sudo apt-get update && sudo apt-get upgrade -y" 
