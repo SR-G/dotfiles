@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/users/$(whoami)/.oh-my-zsh
-plugins=(git)
+plugins=(git archlinux common-aliases docker systemd)
 
 ZSH_THEME="robbyrussell" # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/ Optionally, if you set this to "random", it'll load a random theme each time that oh-my-zsh is loaded.
 DISABLE_UPDATE_PROMPT=true
@@ -73,8 +73,11 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
+
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
 
 # === Functions
 

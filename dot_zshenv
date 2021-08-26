@@ -1,6 +1,7 @@
 # Environment variables, exports, ...
 
 export TERM=linux
+export TMOUT=0
 export LC_CTYPE=fr_FR.UTF-8
 # export LANG=fr_FR.UTF-8
 
