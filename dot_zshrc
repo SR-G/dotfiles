@@ -356,6 +356,7 @@ alias h="fc -li 1"  # like `history` but with dates
 alias hatop='/home/applications/hatop/current/bin/hatop -s /var/run/haproxy.sock'        
 alias sleep-solaris='curl 192.168.8.3:8009/sleep'
 alias sleep-cap='curl 192.168.8.176:8009/sleep'
+alias install-oh-my-zsh="sh -c '$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)'"
 
 # === Environments
 
