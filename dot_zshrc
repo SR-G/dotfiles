@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/users/sergio/.oh-my-zsh
+export ZSH=/home/users/$(whoami)/.oh-my-zsh
 plugins=(git)
 
 ZSH_THEME="robbyrussell" # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/ Optionally, if you set this to "random", it'll load a random theme each time that oh-my-zsh is loaded.
@@ -16,7 +16,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-source $ZSH/oh-my-zsh.sh  # User configuration
+[[ -f $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh  # User configuration
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -293,7 +293,7 @@ function bdl {
 
 # === Aliases
 
-export OS=$(grep "^NAME=" /etc/os-release|cut -d"=" -f2)
+export OS=$(grep "^NAME=" /etc/os-release|cut -d"=" -f2|tr "\"" "")
 case "$OS" in
   "Debian GNU/Linux")
     alias upd="sudo apt-get update && sudo apt-get upgrade -y" 
