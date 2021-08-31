@@ -309,7 +309,7 @@ esac
 alias vnc-jupiter='vncviewer jupiter:1 -passwd ~/.vnc/passwd -compresslevel 0 -quality 0 -shared'
 # alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --quiet --sout "#duplicate{dst=standard{access=udp,mux=ts,dst=$IP}" -I ncurses --extraintf http --http-src "/mnt/"'
 alias git='LANG=en_GB git'
-alias torrent='scp *.torrent root@tensin:/home/downloaded/torrents/rtorrent/watch/start/ && rm *.torrent'
+alias torrent='scp *.torrent root@tensin:/home/downloaded/torrents/rtorrent/watch/start/ && rm -f *.torrent'
 alias veille='op pm-suspend'
 # alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout "#duplicate{dst=standard{access=udp,mux=ts,dst=$IP}" -I ncurses'
 alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout="#duplicate{dst=rtp{mux=ts,ttl=10,name=\"VLC Local Network Streaming\",description=\"VLC Local Network Streaming\",port=1234,sdp=rtsp://:8004/vlc.sdp}}" --extraintf ncurses -I http --http-host 0.0.0.0:8003 '
