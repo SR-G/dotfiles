@@ -317,7 +317,7 @@ alias veille='op pm-suspend'
 # alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout "#duplicate{dst=standard{access=udp,mux=ts,dst=$IP}" -I ncurses'
 alias rvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout="#duplicate{dst=rtp{mux=ts,ttl=10,name=\"VLC Local Network Streaming\",description=\"VLC Local Network Streaming\",port=1234,sdp=rtsp://:8004/vlc.sdp}}" --extraintf ncurses -I http --http-host 0.0.0.0:8003 '
 alias tvlc='IP=$(echo $SSH_CLIENT | cut -d" " -f1) ; vlc --verbose 0 --sout="#transcode{vcodec=h264,acodec=mpga,vb=800,ab=128,deinterlace}:duplicate{dst=rtp{mux=ts,ttl=10,name=\"VLC Local Network Streaming\",description=\"VLC Local Network Streaming\",port=1234,sdp=rtsp://:8004/vlc.sdp}}" --extraintf ncurses -I http --http-host 0.0.0.0:8003 '
-alias clean='clean.sh'
+# alias clean='clean.sh'
 # alias start=_start
 alias start='sudo /etc/init.d/'
 alias dus='du -ks * | sort -n'
