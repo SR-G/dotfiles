@@ -77,3 +77,7 @@ git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si
 ```
+
+### Extra tools
+
+- STOW : https://github.com/aspiers/stow
