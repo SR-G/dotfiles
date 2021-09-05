@@ -39,6 +39,16 @@ chezmoi diff
 chezmoi -v apply
 ```
 
+## TODO
+
+- [ ] abcde configuration
+- [ ] eclipse configuration + plugins ?
+- [ ] .m2 maven configuration
+- [ ] geany / notepadqq configuration
+- [ ] ssh config ?
+- [ ] task configuration and aliases
+- [ ] terminator configuration ?
+
 ## Misc
 
 ### Git configuration
