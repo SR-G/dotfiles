@@ -48,6 +48,8 @@ chezmoi -v apply
 - [ ] ssh config ?
 - [ ] task configuration and aliases
 - [ ] terminator configuration ?
+- [ ] micro configuration https://micro-editor.github.io/
+- [ ] rclone safe configuration ?
 
 ## Misc
 
