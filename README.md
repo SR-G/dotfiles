@@ -45,11 +45,11 @@ chezmoi -v apply
 - [ ] eclipse configuration + plugins ?
 - [ ] .m2 maven configuration
 - [ ] geany / notepadqq configuration
-- [ ] ssh config ?
+- [x] ssh config
 - [ ] task configuration and aliases
 - [ ] terminator configuration ?
 - [ ] micro configuration https://micro-editor.github.io/
-- [ ] rclone safe configuration ?
+- [x] rclone safe configuration
 
 ## Misc
 
@@ -83,3 +83,5 @@ makepkg -si
 ### Extra tools
 
 - STOW : https://github.com/aspiers/stow
+- yadm : https://github.com/TheLocehiliosan/yadm
+- dotenv (npm...) : https://github.com/motdotla/dotenv
