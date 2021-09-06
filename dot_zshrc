@@ -273,7 +273,7 @@ function bdorg {
 }
 
 function tools {
-  cat << EOF | sort | while read TOOL ; do
+  cat << EOF|sort -u|while read TOOL ; do
 fzf
 rg
 htop
@@ -283,6 +283,9 @@ unrar
 7z
 feh
 git
+rclone
+micro
+task
 age
 EOF
     WHICH=$(which $TOOL)  
