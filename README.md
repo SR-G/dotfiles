@@ -7,8 +7,17 @@ Personal set of linux dotfiles / configuration files, handled through [chezmoi](
 - **Initial installation** : 
 
 ```bash
+# Manual installation
 cd /home/
 sh -c "$(curl -fsLS git.io/chezmoi)"
+
+# OS installation
+pacman -S chezmoi
+apt-get install -y chezmoi
+
+# Setup (manual) + retrieve online files from github.com/<user>/dotfiles/
+sh -c "$(curl -fsLS git.io/chezmoi)" -- init --apply SR-G
+
 ```
 
 - **Download dotfiles on a new server** : 
@@ -21,6 +30,14 @@ chezmoi init --apply SR-G
 
 ```bash
 chezmoi add <filename>
+chezmoi add --encrypt <filename>
+chezmoi edit <filename>
+```
+
+- **Init remote URL (after init)** : 
+
+```bash
+git remote add origin https://github.com/SR-G/dotfiles
 ```
 
 - **Commit added files** : 
@@ -82,6 +99,26 @@ makepkg -si
 
 ### Extra tools
 
+- chezmoi : https://github.com/twpayne/chezmoi
 - STOW : https://github.com/aspiers/stow
-- yadm : https://github.com/TheLocehiliosan/yadm
+- yadm : 
+  - https://yadm.io/#
+  - https://github.com/TheLocehiliosan/yadm
 - dotenv (npm...) : https://github.com/motdotla/dotenv
+- dotfilehub : https://github.com/knoebber/dotfile
+
+### Extra links
+
+- Dotfiles examples : 
+  - https://yadm.io/docs/examples
+  - https://github.com/vastbinderj/dotfiles
+  - https://github.com/vsouza/dotfiles
+
+- Discussions : 
+  - Comparisons : https://www.chezmoi.io/docs/comparison/
+  - dotfile : https://www.reddit.com/r/golang/comments/jt9yp7/dotfile_version_control_system_for_single_files/
+  - using git : https://www.atlassian.com/git/tutorials/dotfiles
+  - GNU Stow : https://medium.com/@waterkip/managing-my-dotfiles-with-gnu-stow-262d2540a866
+  - discussion : https://news.ycombinator.com/item?id=11071754
+
+
