@@ -273,8 +273,19 @@ function bdorg {
 }
 
 function tools {
-  for TOOL in fzf rg htop most unzip unrar 7z feh git ; do
-    which $TOOL 
+  cat << EOF | sort | while read TOOL ; do
+fzf
+rg
+htop
+most
+unzip
+unrar
+7z
+feh
+git
+age
+EOF
+    echo "Tool [$TOOL]\t\t"$(which $TOOL)
   done
 }
 
