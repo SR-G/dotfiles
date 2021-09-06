@@ -285,7 +285,10 @@ feh
 git
 age
 EOF
-    echo "Tool [$TOOL]\t\t"$(which $TOOL)
+    WHICH=$(which $TOOL)  
+    CR=$?
+    [[ $CR -eq 0 ]] && echo "Tool [\e[38;5;82m${TOOL}\e[0m]\t\t${WHICH}"
+    [[ $CR -ne 0 ]] && echo "Tool [\e[38;5;198m${TOOL}\e[0m]\t\t${WHICH}"
   done
 }
 
