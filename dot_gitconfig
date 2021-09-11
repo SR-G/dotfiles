@@ -3,3 +3,5 @@
 	email = serge.simon@gmail.com
 [credential]
 	helper = store
+[log]
+	date = iso
