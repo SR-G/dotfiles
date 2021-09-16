@@ -427,6 +427,3 @@ fi
 # === Extra source
 
 [[ -f "$HOME/.zshrc-$HOSTNAME" ]] && source "$HOME/.zshrc-$HOSTNAME"
-
-# == Login banner
-figlet $(hostname)
