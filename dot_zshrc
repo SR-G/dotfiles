@@ -282,6 +282,7 @@ unzip
 unrar
 7z
 feh
+figlet
 git
 rclone
 micro
@@ -427,3 +428,5 @@ fi
 
 [[ -f "$HOME/.zshrc-$HOSTNAME" ]] && source "$HOME/.zshrc-$HOSTNAME"
 
+# == Login banner
+figlet $(hostname)
