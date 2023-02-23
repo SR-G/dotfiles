@@ -5,3 +5,17 @@
 	helper = store
 [log]
 	date = iso
+[help]
+	autocorrect = 20
+[alias]
+	co = checkout
+	br = branch
+	p = push
+	st = status -sb
+	ll = log --oneline
+	last = log -1 HEAD --stat
+	cm = commit -m
+	rv = remote -v
+	d = diff
+	gl = config --global -l
+	se = !git rev-list --all | xargs git grep -F
