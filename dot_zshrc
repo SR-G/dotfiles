@@ -312,7 +312,7 @@ function epuborg {
 }
 
 function bdl {
-  OLD_PWD=$PWD ; cd /home/datas/bdz/ ; fzf -e ; cd $OLD_PWD
+  find /home/datas/bdz/FR/ -type f | fzf -e
 }
 
 # === Aliases
