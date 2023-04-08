@@ -120,7 +120,7 @@ function register_mark {
 }
 
 function unmark {
-  rm -i "${MARKPATH}/${1}" 2>/dev/null
+  rm -f "${MARKPATH}/${1}" 2>/dev/null
 }
 
 function marks {
